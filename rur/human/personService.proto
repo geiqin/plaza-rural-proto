@@ -1,0 +1,117 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "regionService.proto";
+import "groupService.proto";
+
+service PersonService {
+    //创建人员
+    rpc Create (Person) returns (PersonResponse) {}
+    // 编辑人员
+    rpc Update (Person) returns (PersonResponse) {}
+    // 删除人员
+    rpc Delete (Person) returns (PersonResponse) {}
+    // 获取人员详情
+    rpc Get (Person) returns (PersonResponse) {}
+    //分页查询人员列表
+    rpc Search (PersonRequest) returns (PersonResponse) {}
+    //获取人口列表
+    rpc List (PersonRequest) returns (PersonResponse) {}
+    // 获取人员详情
+    rpc Detail (PersonRequest) returns (PersonResponse) {}
+}
+
+//人员
+message Person {
+    int64 id = 1; //ID
+    string real_name = 2; //真实姓名
+    string id_card = 3; //身份证号
+    string birthday = 4; //出生日期
+    string gender = 5; //性别：1-男，2-女
+    string nation = 6; //民族
+    string political = 7; //政治面貌
+    string nationality = 8; //国籍
+    string passport = 9;//护照编号
+    int64 family_id = 10;
+    string family_relation = 11;
+    int64 region_id =12;//区域ID
+    int64 group_id =13;//组ID
+    string addr =14; //住址
+    string mobile =15; //联系电话
+    int64 avatar_id = 16; //头像ID
+    string avatar_url = 17;//头像URL
+    string student_state = 18;//学生状况
+    string soldier_state = 19;//军人状况
+    string civil_servant_state = 20;//公务员状况
+    string labour_state = 21;//劳动力状况
+    string education_level = 22;//教育文化程度
+    repeated string healthy_states = 23;//健康状况【多选】
+    string disability_type = 24;//残疾类型
+    string disability_level = 25;//残疾等级
+    string disability_code = 26;//残疾证编号
+    string type = 27; //户类型
+    string memo = 28;//备注
+    string status = 29;//状态
+    string created_at = 30; //创建时间
+    string updated_at = 31; //修改时间
+    Region region =32;
+    Group group =33;
+}
+
+
+//人员详情
+message PersonDetail {
+    int64 id = 1; //ID
+    string real_name = 2; //真实姓名
+    string id_card = 3; //身份证号
+    string birthday = 4; //出生日期
+    string gender = 5; //性别：1-男，2-女
+    string nation = 6; //民族
+    int64 family_id = 7;
+    string family_relation = 8;
+    int64 region_id =9;//区域ID
+    int64 group_id =10;//组ID
+    string addr =11; //住址
+    string mobile =12; //联系电话
+    string memo = 13;//备注
+    string status = 14;//状态
+    string created_at = 15; //创建时间
+    string updated_at = 16; //修改时间
+    Region region =17;
+    Group group =18;
+    repeated Person membership =19;
+}
+
+message PersonRequest {
+    int64 paged = 1;
+    int64 page_size = 2;
+    string sorting = 3;
+    //----
+    int64 id = 4;
+    string real_name = 5;
+    string id_card = 6;
+    int64 area_id =7;
+    string status = 8;
+    string keywords = 9;
+    int64 family_id =10;
+    string is_poor = 11;
+    string type = 12;
+    int64 town_code = 13;
+    int64 village_code = 14;
+    int64 group_code = 15;
+    repeated int64 ids =16;
+}
+
+message PersonData {
+    Person entity = 1;
+    common.Pager pager =2;
+    repeated Person items = 3;
+    common.Info info =4;
+    PersonDetail detail = 5;
+}
+
+message PersonResponse {
+    PersonData data = 1;
+    common.Error error = 2;
+}

@@ -1,0 +1,66 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "personService.proto";
+
+service HealthPolicyService {
+	//创建落实健康政策
+	rpc Create (HealthPolicy) returns (HealthPolicyResponse) {}
+	// 编辑落实健康政策
+	rpc Update (HealthPolicy) returns (HealthPolicyResponse) {}
+	// 删除落实健康政策
+	rpc Delete (HealthPolicy) returns (HealthPolicyResponse) {}
+	// 获取落实健康政策详情
+	rpc Get (HealthPolicy) returns (HealthPolicyResponse) {}
+	//分页查询落实健康政策列表
+	rpc Search (HealthPolicyRequest) returns (HealthPolicyResponse) {}
+	//导出落实健康政策
+	rpc Export (HealthPolicyRequest) returns (HealthPolicyResponse) {}
+}
+
+//落实健康政策
+message HealthPolicy {
+	int64 id = 1;
+	int64 person_id = 2;
+	string real_name = 3;
+	string id_card = 4;
+	string date = 5;
+	float  give_birth_fund = 6;
+	float family_reward_fund = 7;
+	float family_special_fund = 8;
+	float pension_fund = 9;
+	float complication_fund = 10;
+	float single_child_fund = 11;
+	float disability_die_fund = 12;
+	float other_fund = 13;
+	string status = 14;
+	string created_at = 15;
+	string updated_at = 16;
+	Person person =17;
+}
+
+message HealthPolicyRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+
+	string status = 4;
+	string keywords = 5;
+	string comparison_status = 6;
+	int64 person_id = 7;
+	int64 family_id = 8;
+}
+
+message HealthPolicyData {
+	HealthPolicy entity = 1;
+	common.Pager pager =2;
+	repeated HealthPolicy items = 3;
+	common.Info info =4;
+}
+
+message HealthPolicyResponse {
+	HealthPolicyData data = 1;
+	common.Error error = 2;
+}

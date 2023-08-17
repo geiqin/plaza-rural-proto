@@ -1,0 +1,68 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "personService.proto";
+
+service StudentFundService {
+	//创建学生资助情况
+	rpc Create (StudentFund) returns (StudentFundResponse) {}
+	// 编辑学生资助情况
+	rpc Update (StudentFund) returns (StudentFundResponse) {}
+	// 删除学生资助情况
+	rpc Delete (StudentFund) returns (StudentFundResponse) {}
+	// 获取学生资助情况详情
+	rpc Get (StudentFund) returns (StudentFundResponse) {}
+	//分页查询学生资助情况
+	rpc Search (StudentFundRequest) returns (StudentFundResponse) {}
+	//导出学生资助情况
+	rpc Export (StudentFundRequest) returns (StudentFundResponse) {}
+}
+
+//学生资助情况
+message StudentFund {
+	int64 id = 1;
+	int64 person_id = 2;
+	string master_name = 3;
+	string real_name = 4;
+	string id_card = 5;
+	string date = 6;
+	float preschool_fund =7;
+	float nice_year_fund = 8;
+	float high_school_fund = 9;
+	float high_school_free_tuition = 10;
+	float vocational_fund = 11;
+	float vocational_free_tuition = 12;
+	float province_fund = 13;
+	float university_fund = 14;
+	float student_loan = 15;
+	float social_donation = 16;
+	float other_fund = 17;
+	string created_at = 18;
+	string updated_at = 19;
+	Person person =20;
+}
+
+message StudentFundRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	string keywords = 4;
+	string status = 5;
+	string comparison_status = 6;
+	int64 person_id = 7;
+	int64 family_id = 8;
+}
+
+message StudentFundData {
+	StudentFund entity = 1;
+	common.Pager pager =2;
+	repeated StudentFund items = 3;
+	common.Info info =4;
+}
+
+message StudentFundResponse {
+	StudentFundData data = 1;
+	common.Error error = 2;
+}

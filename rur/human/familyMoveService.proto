@@ -1,0 +1,65 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "personService.proto";
+
+service FamilyMoveService {
+	//创建易地搬迁
+	rpc Create (FamilyMove) returns (FamilyMoveResponse) {}
+	// 编辑易地搬迁
+	rpc Update (FamilyMove) returns (FamilyMoveResponse) {}
+	// 删除易地搬迁
+	rpc Delete (FamilyMove) returns (FamilyMoveResponse) {}
+	// 获取易地搬迁详情
+	rpc Get (FamilyMove) returns (FamilyMoveResponse) {}
+	//分页查询异地搬迁情况
+	rpc Search (FamilyMoveRequest) returns (FamilyMoveResponse) {}
+	//导出异地搬迁情况
+	rpc Export (FamilyMoveRequest) returns (FamilyMoveResponse) {}
+}
+
+//易地搬迁
+message FamilyMove {
+	int64 id = 1;
+	int64 person_id = 2;
+	string real_name = 3;
+	string id_card = 4;
+	string relation = 5;
+	string move_date = 6;
+	int64 from_region_id = 7;
+	int64 from_group_id = 8;
+	string from_addr = 9;
+	int64 to_region_id = 10;
+	string to_addr = 11;
+	string status = 12;
+	string created_at = 13;
+	string updated_at = 14;
+	Person person =15;
+}
+
+
+message FamilyMoveRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	string keywords = 4;
+	string status = 5;
+	repeated int64 ids =6;
+	string comparison_status = 7;
+	int64 person_id = 8;
+	int64 family_id = 9;
+}
+
+message FamilyMoveData {
+	FamilyMove entity = 1;
+	common.Pager pager =2;
+	repeated FamilyMove items = 3;
+	common.Info info =4;
+}
+
+message FamilyMoveResponse {
+	FamilyMoveData data = 1;
+	common.Error error = 2;
+}

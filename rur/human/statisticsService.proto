@@ -1,0 +1,108 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+
+
+service StatisticsService {
+  rpc HouseholdIncome (StatisticsRequest) returns (StatisticsResponse) {}
+  rpc SectionIncome (StatisticsRequest) returns (StatisticsResponse) {}
+  rpc PerFamilyExpense (StatisticsRequest) returns (StatisticsResponse) {}
+  rpc TransferIncome (StatisticsRequest) returns (StatisticsResponse) {}
+}
+
+//家庭收入情况统计
+message HouseholdIncomeStats {
+  int64 id = 1; //ID
+  string name =2; //街道ID
+  int32 family_count = 3; //总户数
+  int32 person_count = 4; //总人数
+  float per_net_income = 5; //人均纯收入
+  float per_annual_income = 6; //人均年收入
+  float per_work_income = 7; //人均工资性收入
+  float per_work_income_rate = 8; //人均工资性收入占比
+  float per_business_income  = 9; //人均生产经营性净收入
+  float per_business_income_rate = 10; //人均生产经营性净收入及占比
+  float per_transfer_income = 11;//人均转移性收入
+  float per_transfer_income_rate = 12;//人均转移性收入占比
+  float per_asset_income = 13; //人均财产性收入
+  float per_asset_income_rate = 14; //人均财产性收入占比
+  float per_business_cost = 15;//人均生产经营性支出
+}
+
+message SectionIncomeStats {
+  int64 id = 1; //ID
+  string name =2; //街道ID
+  int32 family_count = 3; //总户数
+  int32 person_count = 4; //总人数
+  float per_net_income = 5; //人均纯收入
+  int32 section_num_1 = 6; // 5292元以下
+  int32 section_num_2 = 7; //5292-6700元
+  int32 section_num_3 = 8; // 6700-7600元
+  int32 section_num_4 = 9; // 7600-8700元
+  int32 section_num_5 = 10; // 8700-10000元
+  int32 section_num_6 = 11; // 10000-20000元
+  int32 section_num_7 = 12; // 20000-30000元
+  int32 section_num_8 = 13; // 30000-40000元
+  int32 section_num_9 = 14; //40000 - 50000元
+  int32 section_num_10 = 15; //50000元及以上
+}
+
+//户收支情况统计表
+message PerFamilyExpenseStats {
+  int64 id = 1; //ID
+  string name =2; //街道ID
+  int32 family_count = 3; //总户数
+  int32 person_count = 4; //总人数
+  float per_net_income = 5; //户均纯收入
+  float per_work_income = 7; //户均工资性收入
+  float per_transfer_income = 8;//户均转移性收入
+  float per_asset_income = 9; //户均财产性收入
+  float per_business_income  = 10; //户均生产经营性净收入
+  float per_business_cost = 11;//户均生产经营性支出
+}
+
+//转移性收入情况统计
+message TransferIncomeStats {
+  int64 id = 1; //ID
+  string name =2;//name
+  int32 transfer_income_num = 3; //转移性收入户数
+  float per_transfer_income = 4;//户均转移性收入
+  int64 low_income_num = 5; //低保户数
+  float per_low_income = 6; //户均低保金
+  int64 special_funds_num = 7;//特困供养金户数
+  float per_special_funds = 8; //户均特困供养金
+  int64 ecological_funds_num = 9;//生态补偿金户数
+  float per_ecological_funds = 10;//户均生态补偿金
+  int64 elderly_funds_num = 11;//养老保险金户数
+  float per_elderly_funds = 12;//户均养老保险金
+  int64 birth_funds_num = 13;//计划生育金户数
+  float per_birth_funds = 14;//户均计划生育金
+  int64 other_transfer_income_num = 15;//其他转移性收入户数
+  float per_other_transfer_income = 16;//户均其他转移性收入
+}
+
+
+message StatisticsRequest {
+  int64 paged = 1;
+  int64 page_size = 2;
+  string sorting = 3;
+  //----
+  int64 id = 4;
+  int64 county_code = 5;
+  int64 town_code = 6;
+  repeated int64 ids =7;
+}
+
+message StatisticsData {
+  repeated HouseholdIncomeStats HouseholdIncomes = 1;
+  repeated SectionIncomeStats SectionIncomes = 2;
+  repeated PerFamilyExpenseStats PerFamilyExpenses = 3;
+  repeated TransferIncomeStats TransferIncomes = 4;
+  common.Info info =5;
+}
+
+message StatisticsResponse {
+  StatisticsData data = 1;
+  common.Error error = 2;
+}

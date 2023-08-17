@@ -1,0 +1,58 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "personService.proto";
+
+service LandResourceService {
+	//创建土地资源
+	rpc Create (LandResource) returns (LandResourceResponse) {}
+	// 编辑土地资源
+	rpc Update (LandResource) returns (LandResourceResponse) {}
+	// 删除土地资源
+	rpc Delete (LandResource) returns (LandResourceResponse) {}
+	// 获取土地资源详情
+	rpc Get (LandResource) returns (LandResourceResponse) {}
+	//分页查询土地资源
+	rpc Search (LandResourceRequest) returns (LandResourceResponse) {}
+	//导出土地资源
+	rpc Export (LandResourceRequest) returns (LandResourceResponse) {}
+}
+
+//土地资源
+message LandResource {
+	int64 id = 1;
+	int64 person_id = 2;
+	string real_name = 3;
+	string id_card = 4;
+	float plough_area = 5;
+	float land_area = 6;
+	string status = 7;
+	string created_at = 8;
+	string updated_at = 9;
+	Person person =10;
+}
+
+message LandResourceRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	string keywords = 4;
+	string status = 5;
+	string comparison_status = 6;
+	int64 person_id = 7;
+	int64 family_id = 8;
+}
+
+message LandResourceData {
+	LandResource entity = 1;
+	common.Pager pager =2;
+	repeated LandResource items = 3;
+	common.Info info =4;
+}
+
+message LandResourceResponse {
+	LandResourceData data = 1;
+	common.Error error = 2;
+}

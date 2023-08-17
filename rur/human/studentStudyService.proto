@@ -1,0 +1,61 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "personService.proto";
+
+service StudentStudyService {
+	//创建学生在校情况
+	rpc Create (StudentStudy) returns (StudentStudyResponse) {}
+	//编辑学生在校情况
+	rpc Update (StudentStudy) returns (StudentStudyResponse) {}
+	//删除学生在校情况
+	rpc Delete (StudentStudy) returns (StudentStudyResponse) {}
+	//获取学生在校情况详情
+	rpc Get (StudentStudy) returns (StudentStudyResponse) {}
+	//查询学生在校情况
+	rpc Search (StudentStudyRequest) returns (StudentStudyResponse) {}
+	//导出学生在校情况
+	rpc Export (StudentStudyRequest) returns (StudentStudyResponse) {}
+}
+
+//学生在校情况
+message StudentStudy {
+	int64 id = 1;
+	int64 person_id = 2;
+	string real_name = 3;
+	string id_card = 4;
+	string year = 5;
+	string school = 6;
+	string grade = 7;
+	string status = 8;
+	string created_at = 9;
+	string updated_at = 10;
+	Person person =11;
+}
+ 
+
+message StudentStudyRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	string real_name = 4;
+	string id_card = 5;
+	string keywords = 6;
+	string comparison_status = 7;
+	int64 person_id = 8;
+	int64 family_id = 9;
+}
+
+message StudentStudyData {
+	StudentStudy entity = 1;
+	common.Pager pager =2;
+	repeated StudentStudy items = 3;
+	common.Info info =4;
+}
+
+message StudentStudyResponse {
+	StudentStudyData data = 1;
+	common.Error error = 2;
+}

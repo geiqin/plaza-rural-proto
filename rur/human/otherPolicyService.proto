@@ -1,0 +1,60 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "personService.proto";
+
+service OtherPolicyService {
+	//创建其他部门政策落实情况
+	rpc Create (OtherPolicy) returns (OtherPolicyResponse) {}
+	// 编辑其他部门政策落实情况
+	rpc Update (OtherPolicy) returns (OtherPolicyResponse) {}
+	// 删除其他部门政策落实情况
+	rpc Delete (OtherPolicy) returns (OtherPolicyResponse) {}
+	// 获取其他部门政策落实情况详情
+	rpc Get (OtherPolicy) returns (OtherPolicyResponse) {}
+	//分页查询其他部门政策落实情况列表
+	rpc Search (OtherPolicyRequest) returns (OtherPolicyResponse) {}
+	//导出其他部门政策落实情况
+	rpc Export (OtherPolicyRequest) returns (OtherPolicyResponse) {}
+}
+
+//残联政策落实情况
+message OtherPolicy {
+	int64 id = 1;
+	int64 person_id = 2;
+	string real_name = 3;
+	string id_card = 4;
+	string date = 5;
+	string type = 6;
+	float subsidy_amount = 7;
+	string status = 8;
+	string created_at = 9;
+	string updated_at = 10;
+	Person person =11;
+}
+
+message OtherPolicyRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	string keywords = 4;
+	string status = 5;
+	repeated int64 ids =6;
+	string comparison_status = 7;
+	int64 person_id = 8;
+	int64 family_id = 9;
+}
+
+message OtherPolicyData {
+	OtherPolicy entity = 1;
+	common.Pager pager =2;
+	repeated OtherPolicy items = 3;
+	common.Info info =4;
+}
+
+message OtherPolicyResponse {
+	OtherPolicyData data = 1;
+	common.Error error = 2;
+}

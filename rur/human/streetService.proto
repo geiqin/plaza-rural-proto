@@ -1,0 +1,41 @@
+syntax = "proto3";
+package services;
+option go_package ="/.;services";
+
+message Area {
+  int64 id = 1;
+  int64 area_id = 2;
+  string rank_type = 3;
+  string name = 4;
+  string shortname = 5;
+  string parent_path = 6;
+  string province = 7;
+  string city = 8;
+  string district = 9;
+  string province_shortname = 10;
+  string city_shortname = 11;
+  string district_shortname = 12;
+  string province_pinyin = 13;
+  string city_pinyin = 14;
+  string district_pinyin = 15;
+  string pinyin = 16;
+  string jianpin = 17;
+  string first_char = 18;
+  string city_code = 19;
+  string zip_code = 20;
+}
+
+message Street {
+  int64 id = 1;
+  string name = 2;
+  int64 area_id = 3;
+  int64 parent_id = 4;
+  string path = 5;
+  int32 depth = 6;
+  string lng = 7;
+  string lat = 8;
+  string memo = 9;
+  string created_at = 10;
+  string updated_at = 11;
+  Area area = 12;
+}

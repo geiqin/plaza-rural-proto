@@ -1,0 +1,60 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "personService.proto";
+
+service PersonInsuredService {
+	//创建落实参保资助
+	rpc Create (PersonInsured) returns (PersonInsuredResponse) {}
+	// 编辑落实参保资助
+	rpc Update (PersonInsured) returns (PersonInsuredResponse) {}
+	// 删除落实参保资助
+	rpc Delete (PersonInsured) returns (PersonInsuredResponse) {}
+	// 获取落实参保资助详情
+	rpc Get (PersonInsured) returns (PersonInsuredResponse) {}
+	//分页查询落实参保资助列表
+	rpc Search (PersonInsuredRequest) returns (PersonInsuredResponse) {}
+	//导出落实参保资助
+	rpc Export (PersonInsuredRequest) returns (PersonInsuredResponse) {}
+}
+
+//落实参保资助
+message PersonInsured {
+	int64 id = 1;
+	int64 person_id = 2;
+	string real_name = 3;
+	string id_card = 4;
+	string year = 5;
+	float pay_amount = 6;
+	float insured_fund = 7;
+	string status = 8;
+	string created_at = 9;
+	string updated_at = 10;
+	Person person =11;
+}
+
+message PersonInsuredRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	string keywords = 4;
+	string status = 5;
+	repeated int64 ids =6;
+	string comparison_status = 7;
+	int64 person_id = 8;
+	int64 family_id = 9;
+}
+
+message PersonInsuredData {
+	PersonInsured entity = 1;
+	common.Pager pager =2;
+	repeated PersonInsured items = 3;
+	common.Info info =4;
+}
+
+message PersonInsuredResponse {
+	PersonInsuredData data = 1;
+	common.Error error = 2;
+}

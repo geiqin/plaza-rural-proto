@@ -1,0 +1,61 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "familyService.proto";
+
+service FamilyDangerousHouseService {
+	//创建落实危房改造
+	rpc Create (FamilyDangerousHouse) returns (FamilyDangerousHouseResponse) {}
+	// 编辑落实危房改造
+	rpc Update (FamilyDangerousHouse) returns (FamilyDangerousHouseResponse) {}
+	// 删除落实危房改造
+	rpc Delete (FamilyDangerousHouse) returns (FamilyDangerousHouseResponse) {}
+	// 获取落实危房改造详情
+	rpc Get (FamilyDangerousHouse) returns (FamilyDangerousHouseResponse) {}
+	//分页查询落实危房改造
+	rpc Search (FamilyDangerousHouseRequest) returns (FamilyDangerousHouseResponse) {}
+	//导出落实危房改造
+	rpc Export (FamilyDangerousHouseRequest) returns (FamilyDangerousHouseResponse) {}
+}
+
+//住房情况
+message FamilyDangerousHouse {
+	int64 id = 1;
+	int64 family_id = 2;
+	string real_name = 3;
+	string id_card = 4;
+	string is_enjoy_subsidy = 5;
+	string year = 6;
+	string way = 7;
+	float subsidy_amount = 8;
+	string remark = 9;
+	string status = 10;
+	string created_at = 11;
+	string updated_at = 12;
+	Family family =13;
+}
+
+message FamilyDangerousHouseRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	string keywords = 4;
+	string status = 5;
+	repeated int64 ids =6;
+	string comparison_status = 7;
+	int64 family_id = 8;
+}
+
+message FamilyDangerousHouseData {
+	FamilyDangerousHouse entity = 1;
+	common.Pager pager =2;
+	repeated FamilyDangerousHouse items = 3;
+	common.Info info =4;
+}
+
+message FamilyDangerousHouseResponse {
+	FamilyDangerousHouseData data = 1;
+	common.Error error = 2;
+}

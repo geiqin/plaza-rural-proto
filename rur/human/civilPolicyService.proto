@@ -1,0 +1,66 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "personService.proto";
+
+service CivilPolicyService {
+	//创建落实民政补助政策
+	rpc Create (CivilPolicy) returns (CivilPolicyResponse) {}
+	// 编辑落实民政补助政策
+	rpc Update (CivilPolicy) returns (CivilPolicyResponse) {}
+	// 删除落实民政补助政策
+	rpc Delete (CivilPolicy) returns (CivilPolicyResponse) {}
+	// 获取落实民政补助政策详情
+	rpc Get (CivilPolicy) returns (CivilPolicyResponse) {}
+	//分页查询落实民政补助政策列表
+	rpc Search (CivilPolicyRequest) returns (CivilPolicyResponse) {}
+	//导出落实民政补助政策
+	rpc Export (CivilPolicyRequest) returns (CivilPolicyResponse) {}
+}
+
+//落实民政补助政策
+message CivilPolicy {
+	int64 id = 1;
+	int64 person_id = 2;
+	string real_name = 3;
+	string id_card = 4;
+	string date = 5;
+	float subsistence_fund = 6;
+	float destitute_fund = 7;
+	float orphan_fund = 8;
+	float older_age_fund = 9;
+	float old_employee_fund = 10;
+	float welfare_lottery_fund = 11;
+	float interim_relief_fund = 12;
+	float other_fund = 13;
+	string status = 14;
+	string created_at = 15;
+	string updated_at = 16;
+	Person person =17;
+}
+
+message CivilPolicyRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	string keywords = 4;
+	string status = 5;
+	repeated int64 ids =6;
+	string comparison_status = 7;
+	int64 person_id = 8;
+	int64 family_id = 9;
+}
+
+message CivilPolicyData {
+	CivilPolicy entity = 1;
+	common.Pager pager =2;
+	repeated CivilPolicy items = 3;
+	common.Info info =4;
+}
+
+message CivilPolicyResponse {
+	CivilPolicyData data = 1;
+	common.Error error = 2;
+}

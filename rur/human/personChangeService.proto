@@ -1,0 +1,62 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "personService.proto";
+
+service PersonChangeService {
+	//创建人员变更
+	rpc Create (PersonChange) returns (PersonChangeResponse) {}
+	// 编辑人员变更
+	rpc Update (PersonChange) returns (PersonChangeResponse) {}
+	// 删除人员变更
+	rpc Delete (PersonChange) returns (PersonChangeResponse) {}
+	// 获取人员变更详情
+	rpc Get (PersonChange) returns (PersonChangeResponse) {}
+	//分页查询家庭列表
+	rpc Search (PersonChangeRequest) returns (PersonChangeResponse) {}
+}
+
+//人员变更
+message PersonChange {
+	int64 id = 1;
+	int64 person_id = 2;
+	string real_name = 3;
+	string id_card = 4;
+	string reason = 5;
+	string memo = 6;
+	string date = 7;
+	string status = 8;
+	int64 creator_id = 9;
+	int64 modifier_id = 10;
+	string created_at = 11;
+	string updated_at = 12;
+	Person person =13;
+}
+
+message PersonChangeRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	int64 family_id = 4;
+	int64 person_id = 5;
+	int64 master_id = 6;
+	string real_name = 7;
+	string id_card = 8;
+	string status = 9;
+	string change_type = 10;
+	string keywords = 11;
+}
+
+message PersonChangeData {
+	PersonChange entity = 1;
+	common.Pager pager =2;
+	repeated PersonChange items = 3;
+	common.Info info =4;
+}
+
+message PersonChangeResponse {
+	PersonChangeData data = 1;
+	common.Error error = 2;
+}

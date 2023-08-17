@@ -1,0 +1,65 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+
+
+service DashboardService {
+  rpc Index (DashboardRequest) returns (DashboardResponse) {}
+}
+
+//家庭总数、人口总数、农户人口、建档立卡人口统计
+message MemberStats {
+  int32 family_count = 1; //家庭总数
+  int32 person_count = 2; //人口总数
+  int32 farming_person_count = 3; //农户人口
+  int32 poor_person_count = 4; //建档立卡人口
+}
+
+//区域人口统计
+message RegionMemberStats {
+  int64 region_id =1; //区域ID
+  string region_name = 2; //区域名称
+  int32 person_count = 3; //区域人口数
+}
+
+//户属性统计
+message FamilyTypeStats {
+  string family_type =1; //户属性
+  int32 family_count = 3; //总户数
+  int32 person_count = 4; //总人数
+}
+
+//劳动技能统计
+message LabourStats{
+  string name =1; //劳动技能名称
+  int32 person_count = 2; //人数
+  float ratio = 3; //占比
+}
+
+
+message DashboardRequest {
+  int64 paged = 1;
+  int64 page_size = 2;
+  string sorting = 3;
+  //----
+  int64 id = 4;
+  int64 region_id =5;
+  int64 county_code = 6;
+  int64 town_code = 7;
+  int64 village_code = 8;
+}
+
+
+message DashboardData {
+  MemberStats memberStats = 1;
+  repeated RegionMemberStats regionMemberStats = 2;
+  repeated FamilyTypeStats familyTypeStats = 3;
+  repeated LabourStats labourStats = 4;
+  common.Info info =5;
+}
+
+message DashboardResponse {
+  DashboardData data = 1;
+  common.Error error = 2;
+}

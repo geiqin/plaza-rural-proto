@@ -1,0 +1,86 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "personService.proto";
+import "regionService.proto";
+import "groupService.proto";
+
+service FamilyService {
+	//创建家庭信息
+	rpc Create (Family) returns (FamilyResponse) {}
+	// 编辑家庭信息
+	rpc Update (Family) returns (FamilyResponse) {}
+	// 删除家庭信息
+	rpc Delete (Family) returns (FamilyResponse) {}
+	// 获取家庭信息详情
+	rpc Get (Family) returns (FamilyResponse) {}
+	//分页查询家庭列表
+	rpc Search (FamilyRequest) returns (FamilyResponse) {}
+	//获取家庭列表
+	rpc List (FamilyRequest) returns (FamilyResponse) {}
+}
+
+//家庭信息
+message Family {
+	int64 id = 1;
+	string code = 2;
+	string house_number = 3;
+	int64 master_id = 4;
+	string master_name = 5;
+	string master_id_card = 6;
+	string type = 7;
+	int64 cover_id = 8;
+	string cover_url = 9;
+	int64 region_id = 10;
+	int64 group_id = 11;
+	string addr =12;
+	string lng =13;
+	string lat = 14;
+	int32 altitude = 15;
+	int64 member_count = 16;
+	string is_poor = 17;
+	string habitation = 18;
+	string status = 19;
+	string created_at = 20;
+	string updated_at = 21;
+	Person master =22;
+	Region region =23;
+	Group group =24;
+	repeated Person membership =25;
+}
+
+
+message FamilyRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	int64 family_id = 4;
+	int64 person_id = 5;
+	int64 master_id = 6;
+	string relation = 7;
+	string status = 8;
+	int64 region_id = 9;
+	int64 group_id = 10;
+	string addr =11;
+	string keywords = 12;
+	repeated int64 ids =13;
+	string type = 14;
+	int64 town_code = 15;
+	int64 village_code = 16;
+	int64 group_code = 17;
+	string is_poor = 18;
+}
+
+message FamilyData {
+	Family entity = 1;
+	common.Pager pager =2;
+	repeated Family items = 3;
+	common.Info info =4;
+}
+
+message FamilyResponse {
+	FamilyData data = 1;
+	common.Error error = 2;
+}

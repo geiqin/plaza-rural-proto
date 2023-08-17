@@ -1,0 +1,64 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "familyService.proto";
+
+service OutPovertyService {
+	//创建脱贫监测对象
+	rpc Create (OutPoverty) returns (OutPovertyResponse) {}
+	// 编辑脱贫监测对象
+	rpc Update (OutPoverty) returns (OutPovertyResponse) {}
+	// 删除脱贫监测对象
+	rpc Delete (OutPoverty) returns (OutPovertyResponse) {}
+	// 获取脱贫监测对象详情
+	rpc Get (OutPoverty) returns (OutPovertyResponse) {}
+	//分页查询脱贫监测对象列表
+	rpc Search (OutPovertyRequest) returns (OutPovertyResponse) {}
+	//导出脱贫监测对象
+	rpc Export (OutPovertyRequest) returns (OutPovertyResponse) {}
+}
+
+//脱贫监测对象
+message OutPoverty {
+	int64 id = 1;
+	int64 family_id = 2;
+	string real_name = 3;
+	string id_card = 4;
+	string family_type = 5;
+	string monitoring_type = 6;
+	string risk_is_eliminate = 7;
+	string risk_identify_time = 8;
+	string risk_eliminate_time = 9;
+	string status = 10;
+	string created_at = 11;
+	string updated_at = 12;
+	Family family =13;
+	repeated int64 ids =14;
+}
+
+message OutPovertyRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	int64 family_id = 4;
+	int64 person_id = 5;
+	int64 master_id = 6;
+	string real_name = 7;
+	string id_card = 8;
+	string status = 9;
+	string comparison_status = 10;
+}
+
+message OutPovertyData {
+	OutPoverty entity = 1;
+	common.Pager pager =2;
+	repeated OutPoverty items = 3;
+	common.Info info =4;
+}
+
+message OutPovertyResponse {
+	OutPovertyData data = 1;
+	common.Error error = 2;
+}

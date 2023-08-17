@@ -1,0 +1,61 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "familyService.proto";
+
+service FamilyWaterService {
+	//创建饮水情况
+	rpc Create (FamilyWater) returns (FamilyWaterResponse) {}
+	// 编辑饮水情况
+	rpc Update (FamilyWater) returns (FamilyWaterResponse) {}
+	// 删除饮水情况
+	rpc Delete (FamilyWater) returns (FamilyWaterResponse) {}
+	// 获取饮水情况详情
+	rpc Get (FamilyWater) returns (FamilyWaterResponse) {}
+	//分页查询家庭列表
+	rpc Search (FamilyWaterRequest) returns (FamilyWaterResponse) {}
+	//导出饮水保障
+	rpc Export (FamilyWaterRequest) returns (FamilyWaterResponse) {}
+}
+
+//饮水情况
+message FamilyWater {
+	int64 id = 1;
+	int64 family_id = 2;
+	string real_name = 3;
+	string id_card = 4;
+	string is_safety = 5;
+	string supply_method = 6;
+	string status = 7;
+	string created_at = 8;
+	string updated_at = 9;
+	Family family =10;
+	repeated int64 ids =11;
+}
+
+message FamilyWaterRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	int64 family_id = 4;
+	int64 person_id = 5;
+	int64 master_id = 6;
+	string real_name = 7;
+	string id_card = 8;
+	string status = 9;
+	string comparison_status = 10;
+}
+
+message FamilyWaterData {
+	FamilyWater entity = 1;
+	common.Pager pager =2;
+	repeated FamilyWater items = 3;
+	common.Info info =4;
+}
+
+message FamilyWaterResponse {
+	FamilyWaterData data = 1;
+	common.Error error = 2;
+}

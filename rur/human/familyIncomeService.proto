@@ -1,0 +1,183 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "familyService.proto";
+
+service FamilyIncomeService {
+	//创建收入情况
+	rpc Create (FamilyIncome) returns (FamilyIncomeResponse) {}
+	// 编辑收入情况
+	rpc Update (FamilyIncome) returns (FamilyIncomeResponse) {}
+	// 删除收入情况
+	rpc Delete (FamilyIncome) returns (FamilyIncomeResponse) {}
+	// 获取收入情况详情
+	rpc Get (FamilyIncome) returns (FamilyIncomeResponse) {}
+	// 获取收入情况详情
+	rpc Detail (FamilyIncome) returns (FamilyIncomeResponse) {}
+	//分页查询家庭列表
+	rpc Search (FamilyIncomeRequest) returns (FamilyIncomeResponse) {}
+	//增加收入明细
+	rpc CreateLog (FamilyIncomeLogRequest) returns (FamilyIncomeResponse) {}
+	//修改收入明细
+	rpc UpdateLog (FamilyIncomeLogRequest) returns (FamilyIncomeResponse) {}
+	//删除收入明细
+	rpc DeleteLog (FamilyIncomeLogRequest) returns (FamilyIncomeResponse) {}
+	//导出家庭收入信息
+	rpc Export (FamilyIncomeRequest) returns (FamilyIncomeResponse) {}
+}
+
+//收入情况
+message FamilyIncome {
+	int64 id = 1;
+	int64 family_id = 2;
+	int32 year = 3;
+	int32 quarter = 4;
+	float business_income = 5;
+	float planting_income = 6;
+	float aquaculture_income = 7;
+	float process_income = 8;
+	float service_income = 9;
+	float business_cost = 10;
+	float planting_cost = 11;
+	float aquaculture_cost = 12;
+	float process_cost = 13;
+	float service_cost = 14;
+	float work_income = 15;
+	float asset_income = 16;
+	float transfer_income = 17;
+	float subsistence_fund = 18;
+	float hardship_fund = 19;
+	float elderly_fund = 20;
+	float birth_fund = 21;
+	float ecology_fund = 22;
+	float other_transfer_income = 23;
+	float total_income = 24;
+	float net_income = 25;
+	float per_net_income = 26;
+	string created_at = 27;
+	string updated_at = 28;
+	Family family =29;
+	IncomeAssetLog income_asset_log =30;
+	repeated IncomeBusinessLog income_business_logs =31;
+	repeated IncomeWorkLog income_work_logs =32;
+	repeated IncomeTransferLog income_transfer_logs =33;
+	IncomeOtherLog income_other_log =34;
+}
+
+message IncomeAssetLog{
+	int64  id =1;//ID
+	int64  family_income_id =2;//家庭收入ID
+	float  asset_bonus =3;//资产分红收入
+	float  land_rent =4;//土地租金
+	float  house_rent =5;//房屋租金
+	float  other_income =6;//其它财产收入
+	string created_at = 7;
+	string updated_at = 8;
+}
+
+message IncomeBusinessLog{
+	int64  id =1;//ID
+	int64  family_income_id =2;//家庭收入ID
+	string industry = 3; //行业: 1、种植业  2、养殖业 3、加工业 4、服务业
+	string title =4;//行业类别
+	string unit =5;//单位
+	float  num =6;//数量
+	float  income =7;//收入金额
+	float  cost =8;//成本支出
+	string created_at = 9;
+	string updated_at = 10;
+}
+
+message IncomeWorkLog{
+	int64  id =1;//ID
+	int64  family_income_id =2;//家庭收入ID
+	int64  person_id =3;//成员ID
+	string real_name =4;//姓名[冗余]
+	string id_card =5;//身份证号码[冗余]
+	string province = 6; //省
+	string city = 7; //市
+	string county = 8; //县
+	string post =9;//岗位
+	int32  months =10;//务工月数
+	float  salary =11;//月薪
+	string tel =12;//联系电话
+	float  total =13;//合计
+	string created_at = 14;
+	string updated_at = 15;
+}
+
+message IncomeTransferLog{
+	int64  id =1;//ID
+	int64  family_income_id =2;//家庭收入ID
+	string type =3;//类型:1-低保金，2-特困供养金，3养老金或退休金，4-计划生育金，5-生态补偿金
+	int32  month =4;//月份
+	int32  num =5;//享受人数
+	float  money =6;//享受金额
+	string created_at = 7;
+	string updated_at = 8;
+}
+
+message IncomeOtherLog{
+	int64 id =1;//ID
+	int64 family_income_id =2;//家庭收入ID
+	float social_relief_fund =3;//社会救济和补助
+	float agriculture_comprehensive_subsidy =4;//农业综合补贴
+	float maintain_income =5;//赡养收入
+	float peasant_benefit_subsidy =6;//惠农补贴
+	float ecology_subsidy = 7; //生态补偿金
+	float policy_life_subsidy =8;//政策性生活补贴
+	float donation_and_indemnity =9;//经常性捐款和赔偿
+	float elderly_subsidy =10;//高龄补贴
+	float disability_subsidy =11;//残疾人补贴
+	float other_subsidy =12;//其它收入
+	string created_at = 13;
+	string updated_at = 14;
+}
+
+message FamilyIncomeLogRequest {
+	int64 id = 1;
+	int64 family_id = 2;
+	int32 year = 3;
+	int32 quarter = 4;
+	string type = 5;
+	IncomeAssetLog income_asset_log  =6;
+	IncomeBusinessLog income_business_log  =7;
+	IncomeWorkLog income_work_log  =8;
+	IncomeTransferLog income_transfer_log  =9;
+	IncomeOtherLog income_other_log  =10;
+}
+
+message FamilyIncomeRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	int64 family_id = 4;
+	int64 person_id = 5;
+	int64 master_id = 6;
+	string real_name = 7;
+	string id_card = 8;
+	string status = 9;
+	repeated int64 family_ids = 10;
+	string type = 12;
+	int64 town_code = 13;
+	int64 village_code = 14;
+	int64 group_code = 15;
+	int32 year = 16;
+	int32 quarter = 17;
+	int64 region_id = 18;
+}
+
+message FamilyIncomeData {
+	FamilyIncome entity = 1;
+	common.Pager pager =2;
+	repeated FamilyIncome items = 3;
+	common.Info info =4;
+}
+
+message FamilyIncomeResponse {
+	FamilyIncomeData data = 1;
+	common.Error error = 2;
+}
+

@@ -1,0 +1,60 @@
+syntax = "proto3";
+package services;
+option go_package = "/.;services";
+import "common/base.proto";
+import "familyService.proto";
+
+service FamilyHouseService {
+	//创建住房保障
+	rpc Create (FamilyHouse) returns (FamilyHouseResponse) {}
+	// 编辑住房保障
+	rpc Update (FamilyHouse) returns (FamilyHouseResponse) {}
+	// 删除住房保障
+	rpc Delete (FamilyHouse) returns (FamilyHouseResponse) {}
+	// 获取住房保障详情
+	rpc Get (FamilyHouse) returns (FamilyHouseResponse) {}
+	//分页查询住房保障
+	rpc Search (FamilyHouseRequest) returns (FamilyHouseResponse) {}
+	//导出住房保障
+	rpc Export (FamilyHouseRequest) returns (FamilyHouseResponse) {}
+}
+
+//住房情况
+message FamilyHouse {
+	int64 id = 1;
+	int64 family_id = 2;
+	string real_name = 3;
+	string id_card = 4;
+	int32 population = 5;
+	string is_safe = 6;
+	string structure = 7;
+	float area = 8;
+	string status = 9;
+	string created_at = 10;
+	string updated_at = 11;
+	Family family =12;
+}
+
+message FamilyHouseRequest {
+	int64 paged = 1;
+	int64 page_size = 2;
+	string sorting = 3;
+	//----
+	string keywords = 4;
+	string status = 5;
+	repeated int64 ids =6;
+	string comparison_status = 7;
+	int64 family_id = 8;
+}
+
+message FamilyHouseData {
+	FamilyHouse entity = 1;
+	common.Pager pager =2;
+	repeated FamilyHouse items = 3;
+	common.Info info =4;
+}
+
+message FamilyHouseResponse {
+	FamilyHouseData data = 1;
+	common.Error error = 2;
+}
